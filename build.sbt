@@ -51,9 +51,6 @@ version := "1.0-SNAPSHOT"
 //PlayKeys.devSettings += "play.server.websocket.periodic-keep-alive-mode" -> "pong"
 ThisBuild / publish / skip := true
 
-ThisBuild / Test / javaOptions ++= Seq(
-  "-Dconfig.resource=application.test.conf"
-)
 // This is for dev-mode server. In dev-mode, the play server is started before the files are compiled.
 // Hence, the application files are not available in the path. For prod, It is in reference.conf file.
 PlayKeys.devSettings += "play.pekko.dev-mode.pekko.coordinated-shutdown.phases.service-requests-done.timeout" -> "150s"
@@ -66,10 +63,8 @@ version := sys.process.Process("cat version.txt").lineStream_!.head
 Global / onChangedBuildSource := IgnoreSourceChanges
 
 val pac4jVersion = "6.1.3"
-val saml = "org.pac4j" % "pac4j-saml" % pac4jVersion exclude (
-  "commons-io",
-  "commons-io"
-) exclude ("org.opensaml", "opensaml-core-api")
+val bouncycastleVersion = "1.81"
+val saml = "org.pac4j" % "pac4j-saml" % pac4jVersion exclude ("org.opensaml", "opensaml-core-api") excludeAll(ExclusionRule("org.springframework", "spring-core"))
 val pac4jDependencies = Seq(
   "org.pac4j" % "pac4j-ldap" % pac4jVersion,
   "org.pac4j" % "pac4j-core" % pac4jVersion,
@@ -86,21 +81,31 @@ val pac4jDependencies = Seq(
   )
 )
 
+val bouncycastleDependencies= Seq(
+  "org.bouncycastle" % "bcprov-jdk18on" % bouncycastleVersion,
+  "org.bouncycastle" % "bcpkix-jdk18on" % bouncycastleVersion,
+  "org.bouncycastle" % "bctls-jdk18on" % bouncycastleVersion,
+  "org.bouncycastle" % "bc-fips" % "2.1.0",
+  "org.bouncycastle" % "bcpkix-fips" % "2.1.9",
+  "org.bouncycastle" % "bctls-fips" % "2.1.20",
+  "org.bouncycastle" % "bcpg-jdk18on" % bouncycastleVersion
+)
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava)
   .enablePlugins(UniversalPlugin, DockerPlugin, GraalVMNativeImagePlugin)
   .settings(
-    libraryDependencies ++= Seq(
+    libraryDependencies ++=  pac4jDependencies ++ Seq(
       guice,
       ws,
       jdbc,
       evolutions,
+      javaForms,
       logback,
       ehcache,
       filters,
       openId,
-      pac4jDependencies,
       "org.apache.commons" % "commons-lang3" % "3.17.0",
+      "commons-validator" % "commons-validator" % "1.8.0",
       "com.nimbusds" % "nimbus-jose-jwt" % "10.3",
       "com.nimbusds" % "oauth2-oidc-sdk" % "11.26",
       "com.github.pureconfig" %% "pureconfig-core" % "0.17.9",
@@ -165,7 +170,7 @@ lazy val root = (project in file("."))
   )
 // .in(file("."))
 // .enablePlugins(PlayJava)
-  .disablePlugins(PlayLayoutPlugin)
+  //.disablePlugins(PlayLayoutPlugin)
 
 ThisBuild / scalaVersion := "3.3.6"
 
@@ -414,7 +419,7 @@ def runNpmBuild(implicit dir: File): Int =
 def npmRunTest(implicit dir: File): Int =
   Process("npm run test", dir) !
 
-clean := (clean dependsOn cleanFrontend).value
+//clean := (clean dependsOn cleanFrontend).value
 
 cleanFrontend := {
   log("Cleaning Frontend...")
@@ -487,6 +492,6 @@ javacOptions ++= Seq(
   "-Xlint:-options",
   "-Xlint:unchecked",
   "-Xlint:deprecation",
-  "-proc:only" // or "-proc:full" if you want full processing
-
+  "-proc:only", // or "-proc:full" if you want full processing
+ "-nowarn"
 )

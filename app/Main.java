@@ -82,6 +82,7 @@ import org.pac4j.oidc.config.OidcConfiguration;
 import org.pac4j.oidc.config.PrivateKeyJWTClientAuthnMethodConfig;
 import org.pac4j.oidc.credentials.OidcCredentials;
 import org.pac4j.core.exception.TechnicalException;
+
 class Main{
     public static void main(String[] args) {
         // This is just a placeholder for the main method.

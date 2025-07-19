@@ -1,5 +1,5 @@
-addSbtPlugin("org.playframework" % "sbt-plugin" % "3.0.7")
-//addSbtPlugin("com.github.sbt" % "sbt-native-packager" % "1.11.1")
+addSbtPlugin("org.playframework" % "sbt-plugin" % "3.0.8")
+addSbtPlugin("com.github.sbt" % "sbt-native-packager" % "1.11.1")
 
 addSbtPlugin("com.github.sbt" % "sbt-javaagent" % "0.1.8")
 

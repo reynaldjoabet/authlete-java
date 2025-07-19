@@ -1,4 +1,4 @@
-// package app.config;
+// package config;
 
 // import io.ebean.EbeanServer;
 // import io.ebean.EbeanServerFactory;
