@@ -113,7 +113,7 @@ lazy val root = (project in file("."))
       // "io.github.iltotore" %% "iron-pureconfig" % "3.0.0"
       "org.playframework" %% "play-mailer" % "10.1.0",
       "org.playframework" %% "play-mailer-guice" % "10.1.0",
-      "org.pac4j" %% "play-pac4j" % "12.0.2-PLAY3.0",
+      "org.pac4j" %% "play-pac4j" % "13.0.0-PLAY3.0",
       "com.sendgrid" % "sendgrid-java" % "4.10.3",
       "de.dentrassi.crypto" % "pem-keystore" % "3.0.0",
       "com.microsoft.azure" % "msal4j" % "1.21.0",
@@ -157,7 +157,7 @@ lazy val root = (project in file("."))
       "org.postgresql" % "postgresql" % "42.7.7",
       "org.flywaydb" % "flyway-core" % "11.9.1",
       "io.ebean" % "ebean" % "17.0.0-RC3",
-      "be.objectify" %% "deadbolt-java" % "3.0.0" // not part of  Pac4j Implementation For Play Framework (Scala 3) in vers
+      //"be.objectify" %% "deadbolt-java" % "3.0.0" // not part of  Pac4j Implementation For Play Framework (Scala 3) in vers
     )
   )
   .settings(
@@ -172,7 +172,7 @@ lazy val root = (project in file("."))
 // .enablePlugins(PlayJava)
   //.disablePlugins(PlayLayoutPlugin)
 
-ThisBuild / scalaVersion := "3.3.6"
+ThisBuild / scalaVersion := "3.3.7"
 
 routesGenerator := InjectedRoutesGenerator
 generateReverseRouter := false
@@ -479,8 +479,6 @@ Universal / packageBin := (Universal / packageBin)
 
 Docker / mappings := (Universal / mappings).value
 //Universal / packageZipTarball / mappings += file("README") -> "README"
-
-ThisBuild / semanticdbEnabled := true
 
 ThisBuild / run / fork := true
 

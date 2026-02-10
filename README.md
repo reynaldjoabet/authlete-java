@@ -1482,4 +1482,59 @@ session = {
 
 What is Single Sign-On (SSO)?
 
-    Single Sign-On (SSO) is a user authentication process that allows a user to access multiple applications with one set of login credentials.
+Single Sign-On (SSO) is a user authentication process that allows a user to access multiple applications with one set of login credentials.
+
+
+```sh
+In sbt 2.0, the server is global to the project directory, but it acts as a machine-wide resource for all clients (terminals and IDEs) that are looking at that specific project.
+```
+
+The Multi-Client Broadcast
+
+In sbt 2.0, the server maintains a list of all connected clients (this includes the sbtn process in your terminal and the Metals BSP connection)
+
+When you run sbt compile in your terminal, the server performs the work.
+
+- As the compiler finds errors, the server sends BSP 
+- Diagnostics notifications (build/publishDiagnostics) not just to the terminal that asked for the compile, but to all connected BSP clients.
+- Metals, as a listening client, receives these notifications in real-time and updates the "Problems" view in VS Code immediately.
+
+`Metals Is a Client (via BSP)`
+
+On macOS / Linux (Unix Domain Sockets)
+
+By default, sbt 2.0 prefers local sockets because they are faster and more secure than network ports.
+
+```json
+{
+  "uri": "local:///Users/yourname/.sbt/1.0/server/6be87d.../sock"
+}
+```
+
+Fallback (TCP Mode)
+`{"uri":"tcp://127.0.0.1:4499"}`
+
+The sbt runner 1.10.10 and later script defaults to using sbtn (GraalVM native-image client) for sbt 2.x. In sbt 2.0, sbt server sends the run task back to sbtn, which will fork a fresh JVM. All you have to do is:
+
+`sbt run`
+
+This avoids blocking the sbt server, and you can have multiple runs. 
+
+`ls -l /opt/homebrew/var/postgresql@18` every file should say username admin
+
+`rm -f /opt/homebrew/var/postgresql@18/postmaster.pid`
+
+
+Copilot finished thinking
+Copilot said: I'll search the repository to understand the
+
+I'll search the repository to understand the relationship between account and account federation.Based on the code in the GitBucket repository, here's the relationship between Account and AccountFederation:
+The Link Between Account and AccountFederation
+
+AccountFederation serves as a mapping/linking table that connects external federated identities (from OIDC or SAML identity providers) to GitBucket's internal Account records.
+Key Relationships:
+
+One-to-Many Relationship: An Account can be linked to multiple federated identities through AccountFederation records. The AccountFederation table stores:
+- issuer: The identity provider issuer
+- subject: The unique subject identifier from the identity provider
+- userName: The GitBucket username (links to Account.userName)

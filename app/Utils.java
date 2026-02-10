@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.jar.Manifest;
@@ -38,13 +39,15 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.persistence.EntityManager;
-
+import play.libs.typedmap.TypedKey;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 //import org.apache.commons.io.IOUtils;
 
 public class Utils {
+
+    protected static final TypedKey<Map<String, Object>> PAC4J_REQUEST_ATTRIBUTES = TypedKey.create("pac4jRequestAttributes");
 	private static String INPUT = "Unvalidated Input";
 	private static String SERVER = "Server Misconfiguration";
 	private static String CRYPTO = "Weak Cryptography";

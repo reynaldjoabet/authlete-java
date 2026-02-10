@@ -1,3 +1,4 @@
+package app;
 import org.apache.pekko.http.scaladsl.model.Uri
 final case class OpenIdConfig(
     issuer: Uri,
