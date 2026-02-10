@@ -1,7 +1,7 @@
-name: Scala CI Build
+name: Java CI Build
 
 on:
-  workflow_dispatch: {}        # ← adds the manual "Run workflow" button (default branch)
+  workflow_dispatch: {}
   pull_request:
     branches: [main]
   push:
@@ -23,21 +23,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Java
+      - name: Set up Java and SBT cache
         uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
           distribution: ${{ matrix.distribution }}
           cache: sbt
-          cache-dependency-path: |
-            sub-project/build.sbt
-            sub-project/project/build.properties
 
       - name: Set up Sbt
         uses: sbt/setup-sbt@v1
 
-      - name: Cache sbt and dependencies
-        uses: coursier/cache-action@v6
-
-      - name: Build with SBT
-        run: sbt compile
+      - name: Build and Test
+        run: |
+          sbt clean
+          sbt compile
+          sbt test
